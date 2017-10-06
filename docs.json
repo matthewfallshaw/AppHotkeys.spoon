@@ -1,0 +1,212 @@
+[
+  {
+    "Constant" : [
+
+    ],
+    "submodules" : [
+
+    ],
+    "Function" : [
+
+    ],
+    "Variable" : [
+      {
+        "parameters" : [
+
+        ],
+        "stripped_doc" : [
+          "Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon."
+        ],
+        "name" : "logger",
+        "doc" : "Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon.",
+        "notes" : [
+
+        ],
+        "signature" : "AppHotkeys.logger",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "def" : "AppHotkeys.logger",
+        "desc" : "Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon."
+      },
+      {
+        "parameters" : [
+
+        ],
+        "stripped_doc" : [
+          "The hotkeys for each app. ",
+          ""
+        ],
+        "name" : "hotkeys",
+        "doc" : "The hotkeys for each app. \n\nNotes:\n * `table.insert(AppHotkeys.hotkeys[\"<hs.application:name()>\"], <hs.hotkey.new(...)>)`\n * eg. `table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"], hs.hotkey.new('⌘⇧', ']', function() hs.eventtap.keyStroke({'alt'}, 'down') end))`\n * You don't need to initialise `AppHotkeys.hotkeys[\"<hs.application:name()>\"] = {}`, that will be done for you.",
+        "notes" : [
+          " * `table.insert(AppHotkeys.hotkeys[\"<hs.application:name()>\"], <hs.hotkey.new(...)>)`",
+          " * eg. `table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"], hs.hotkey.new('⌘⇧', ']', function() hs.eventtap.keyStroke({'alt'}, 'down') end))`",
+          " * You don't need to initialise `AppHotkeys.hotkeys[\"<hs.application:name()>\"] = {}`, that will be done for you."
+        ],
+        "signature" : "AppHotkeys.hotkeys",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "def" : "AppHotkeys.hotkeys",
+        "desc" : "The hotkeys for each app."
+      }
+    ],
+    "stripped_doc" : [
+
+    ],
+    "Deprecated" : [
+
+    ],
+    "desc" : "Enables and disables hotkeys as applications get and lose focus.",
+    "type" : "Module",
+    "Constructor" : [
+
+    ],
+    "doc" : "Enables and disables hotkeys as applications get and lose focus.\n\nIn your `~\/.hammerspoon\/init.lua`, ...  \nAdd `hs.loadSpoon(\"AppHotkeys\")`.  \nAdd `table.insert(spoon.AppHotkeys.hotkeys[\"<hs.application:name()>\"], hs.hotkey.new(...))`\nfor each app hotkey you want to include. (That's `.new(...)` not `.bind(...)` since hotkeys\nshouldn't be enabled until each app gets focus.)\nStart the app watcher with `spoon.AppHotkeys:start()`.\n\nExample `~\/.hammerspoon\/init.lua`:\n\n    hs.loadSpoon(\"AppHotkeys\")\n\n    -- Terminal ⌘1-9 to tab focus\n    logger.i(\"Terminal hotkeys for switching ⌘1-9 to Tab focus\")\n    for i=1,8 do\n      table.insert(spoon.AppHotkeys.hotkeys[\"Terminal\"], hs.hotkey.new('⌘', tostring(i), function()\n        hs.osascript.applescript('tell application \"Terminal\" to set selected of tab ' .. i .. ' of first window to true')\n      end))\n    end\n    table.insert(spoon.AppHotkeys.hotkeys[\"Terminal\"], hs.hotkey.new('⌘', \"9\", function()\n      hs.osascript.applescript('tell application \"Terminal\" to set selected of last tab of first window to true')\n    end))\n\n    -- Slack usability improvements\n    logger.i(\"Slack usability hotkeys\")\n    table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"], hs.hotkey.new('⌘', 'w', function()\n      hs.eventtap.keyStrokes(\"\/leave \")\n      hs.timer.doAfter(0.3, function() hs.application.get(\"Slack\"):activate(); hs.eventtap.keyStroke({}, \"return\") end)\n    end))\n    table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"],\n      hs.hotkey.new('⌘⇧', ']', function() hs.eventtap.keyStroke({'alt'}, 'down') end))\n    table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"],\n      hs.hotkey.new('⌘⇧', '[', function() hs.eventtap.keyStroke({'alt'}, 'up') end))\n\n    spoon.AppHotkeys:start()",
+    "Method" : [
+      {
+        "parameters" : [
+          " * None",
+          ""
+        ],
+        "stripped_doc" : [
+          "Starts AppHotkeys, building a `hs.window.filter` for each app in `spoon.AppHotkeys.hotkeys`.",
+          ""
+        ],
+        "name" : "start",
+        "doc" : "Starts AppHotkeys, building a `hs.window.filter` for each app in `spoon.AppHotkeys.hotkeys`.\n\nParameters:\n * None\n\nReturns:\n * The AppHotkeys object",
+        "notes" : [
+
+        ],
+        "signature" : "AppHotkeys:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The AppHotkeys object"
+        ],
+        "def" : "AppHotkeys:start()",
+        "desc" : "Starts AppHotkeys, building a `hs.window.filter` for each app in `spoon.AppHotkeys.hotkeys`."
+      },
+      {
+        "parameters" : [
+          " * None",
+          ""
+        ],
+        "stripped_doc" : [
+          "Stops AppHotkeys, disabling any hotkeys that are enabled and disabling each app `hs.window.filter`.",
+          ""
+        ],
+        "name" : "stop",
+        "doc" : "Stops AppHotkeys, disabling any hotkeys that are enabled and disabling each app `hs.window.filter`.\n\nParameters:\n * None\n\nReturns:\n * The AppHotkeys object",
+        "notes" : [
+
+        ],
+        "signature" : "AppHotkeys:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The AppHotkeys object"
+        ],
+        "def" : "AppHotkeys:stop()",
+        "desc" : "Stops AppHotkeys, disabling any hotkeys that are enabled and disabling each app `hs.window.filter`."
+      }
+    ],
+    "Command" : [
+
+    ],
+    "Field" : [
+
+    ],
+    "items" : [
+      {
+        "parameters" : [
+
+        ],
+        "stripped_doc" : [
+          "The hotkeys for each app. ",
+          ""
+        ],
+        "name" : "hotkeys",
+        "doc" : "The hotkeys for each app. \n\nNotes:\n * `table.insert(AppHotkeys.hotkeys[\"<hs.application:name()>\"], <hs.hotkey.new(...)>)`\n * eg. `table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"], hs.hotkey.new('⌘⇧', ']', function() hs.eventtap.keyStroke({'alt'}, 'down') end))`\n * You don't need to initialise `AppHotkeys.hotkeys[\"<hs.application:name()>\"] = {}`, that will be done for you.",
+        "notes" : [
+          " * `table.insert(AppHotkeys.hotkeys[\"<hs.application:name()>\"], <hs.hotkey.new(...)>)`",
+          " * eg. `table.insert(spoon.AppHotkeys.hotkeys[\"Slack\"], hs.hotkey.new('⌘⇧', ']', function() hs.eventtap.keyStroke({'alt'}, 'down') end))`",
+          " * You don't need to initialise `AppHotkeys.hotkeys[\"<hs.application:name()>\"] = {}`, that will be done for you."
+        ],
+        "signature" : "AppHotkeys.hotkeys",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "def" : "AppHotkeys.hotkeys",
+        "desc" : "The hotkeys for each app."
+      },
+      {
+        "parameters" : [
+
+        ],
+        "stripped_doc" : [
+          "Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon."
+        ],
+        "name" : "logger",
+        "doc" : "Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon.",
+        "notes" : [
+
+        ],
+        "signature" : "AppHotkeys.logger",
+        "type" : "Variable",
+        "returns" : [
+
+        ],
+        "def" : "AppHotkeys.logger",
+        "desc" : "Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon."
+      },
+      {
+        "parameters" : [
+          " * None",
+          ""
+        ],
+        "stripped_doc" : [
+          "Starts AppHotkeys, building a `hs.window.filter` for each app in `spoon.AppHotkeys.hotkeys`.",
+          ""
+        ],
+        "name" : "start",
+        "doc" : "Starts AppHotkeys, building a `hs.window.filter` for each app in `spoon.AppHotkeys.hotkeys`.\n\nParameters:\n * None\n\nReturns:\n * The AppHotkeys object",
+        "notes" : [
+
+        ],
+        "signature" : "AppHotkeys:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The AppHotkeys object"
+        ],
+        "def" : "AppHotkeys:start()",
+        "desc" : "Starts AppHotkeys, building a `hs.window.filter` for each app in `spoon.AppHotkeys.hotkeys`."
+      },
+      {
+        "parameters" : [
+          " * None",
+          ""
+        ],
+        "stripped_doc" : [
+          "Stops AppHotkeys, disabling any hotkeys that are enabled and disabling each app `hs.window.filter`.",
+          ""
+        ],
+        "name" : "stop",
+        "doc" : "Stops AppHotkeys, disabling any hotkeys that are enabled and disabling each app `hs.window.filter`.\n\nParameters:\n * None\n\nReturns:\n * The AppHotkeys object",
+        "notes" : [
+
+        ],
+        "signature" : "AppHotkeys:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The AppHotkeys object"
+        ],
+        "def" : "AppHotkeys:stop()",
+        "desc" : "Stops AppHotkeys, disabling any hotkeys that are enabled and disabling each app `hs.window.filter`."
+      }
+    ],
+    "name" : "AppHotkeys"
+  }
+]
