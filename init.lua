@@ -38,7 +38,12 @@
 ---     spoon.AppHotkeys:start()
 
 local M = {}
-M.window_filters = {}
+M.__index = M
+
+function M:init()
+  self.window_filters = {}
+  setmetatable(M.hotkeys, { __index = function(t,k) t[k]={}; return t[k] end }) -- initialise M.hotkeys.? = {}
+end
 
 -- Metadata
 M.name = "AppHotkeys"
@@ -62,7 +67,6 @@ local logger = hs.logger.new("App Hotkeys")
 ---  * eg. `table.insert(spoon.AppHotkeys.hotkeys["Slack"], hs.hotkey.new('⌘⇧', ']', function() hs.eventtap.keyStroke({'alt'}, 'down') end))`
 ---  * You don't need to initialise `AppHotkeys.hotkeys["<hs.application:name()>"] = {}`, that will be done for you.
 M.hotkeys = {}
-setmetatable(M.hotkeys, { __index = function(t,k) t[k]={}; return t[k] end }) -- initialise M.hotkeys.? = {}
 
 
 -- Utility functions
