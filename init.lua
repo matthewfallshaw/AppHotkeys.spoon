@@ -40,11 +40,6 @@
 local M = {}
 M.__index = M
 
-function M:init()
-  self.window_filters = {}
-  setmetatable(M.hotkeys, { __index = function(t,k) t[k]={}; return t[k] end }) -- initialise M.hotkeys.? = {}
-end
-
 -- Metadata
 M.name = "AppHotkeys"
 M.version = "0.1"
@@ -52,10 +47,16 @@ M.author = "Matthew Fallshaw <m@fallshaw.me>"
 M.license = "MIT - https://opensource.org/licenses/MIT"
 M.homepage = "https://github.com/matthewfallshaw/AppHotkeys.spoon"
 
+function M:init()
+  self.window_filters = {}
+  setmetatable(M.hotkeys, { __index = function(t,k) t[k]={}; return t[k] end }) -- initialise M.hotkeys.? = {}
+end
+
 --- AppHotkeys.logger
 --- Variable
 --- Logger object used within the Spoon. Can be accessed to set the default log level for the messages coming from the Spoon.
 local logger = hs.logger.new("App Hotkeys")
+M.logger = logger
 
 
 --- AppHotkeys.hotkeys
@@ -99,7 +100,8 @@ function M:start()
       [hs.window.filter.windowVisible] = windowFocused, -- because focusing a hidden app doesn't trigger windowFocused
       [hs.window.filter.windowUnfocused] = windowUnfocused,
     })
-    if hs.application.frontmostApplication():name() == app then windowFocused(_, app, _) end
+    local frontmost = hs.application.frontmostApplication()
+    if frontmost and frontmost:name() == app then windowFocused(_, app, _) end
   end
 end
 
